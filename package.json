@@ -1,6 +1,6 @@
 {
   "name": "@haixee/create-pkg",
-  "version": "0.0.0",
+  "version": "0.0.1-alpha.0",
   "type": "module",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,6 +11,7 @@
       "default": "./dist/index.js"
     }
   },
+  "bin": "dist/index.js",
   "files": [
     "dist"
   ],
