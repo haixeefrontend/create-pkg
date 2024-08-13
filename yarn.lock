@@ -182,6 +182,8 @@ __metadata:
     inquirer: "npm:^10.1.8"
     tsx: "npm:^4.17.0"
     typescript: "npm:^5.5.3"
+  bin:
+    create-pkg: dist/index.js
   languageName: unknown
   linkType: soft
 
