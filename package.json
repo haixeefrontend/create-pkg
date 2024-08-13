@@ -19,6 +19,7 @@
   },
   "scripts": {
     "build": "tsc -p",
+    "prepublishOnly": "yarn build",
     "pkg": "tsx src/index.ts"
   },
   "dependencies": {
