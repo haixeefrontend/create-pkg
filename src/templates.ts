@@ -1,6 +1,6 @@
 import dedent from 'dedent'
 
-import { getCurrentYarnVersion, getNpmPackageVersion } from './utils'
+import { getCurrentYarnVersion, getNpmPackageVersion } from './utils.js'
 
 export interface TemplateOption {
   name: string

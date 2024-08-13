@@ -2,7 +2,7 @@ import { createRequire } from 'node:module'
 
 import { confirm, input } from '@inquirer/prompts'
 import * as fse from 'fs-extra'
-import { plainTemplates } from './templates'
+import { plainTemplates } from './templates.js'
 
 const require = createRequire(import.meta.url)
 
