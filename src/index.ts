@@ -4,7 +4,7 @@ import { confirm, input } from '@inquirer/prompts'
 import * as fse from 'fs-extra'
 
 import pkg from '../package.json'
-import { plainTemplates } from './templates.js'
+import { plainTemplates, viteTemplates } from './templates.js'
 
 const require = createRequire(import.meta.url)
 
@@ -13,6 +13,7 @@ const cac = require('cac')(pkg.name) as import('cac').CAC
 cac
   .command('[path]', 'Create a new NPM package')
   .option('-n, --name <name>', 'Package name')
+  .option('-t, --template <template>', 'Template to use')
   .option('-y, --yes', 'Skip prompts')
   .action(async (path, options) => {
     if (!path) {
@@ -20,6 +21,18 @@ cac
     }
     if (!options.name) {
       options.name = await input({ message: 'Enter the package name' })
+    }
+
+    let template = plainTemplates
+    switch (options.template) {
+      case 'plain':
+        template = plainTemplates
+        break
+      case 'vite':
+        template = viteTemplates
+        break
+      default:
+        break
     }
 
     if (!options.yes) {
@@ -35,7 +48,7 @@ cac
     console.log('Creating package...')
 
     await fse.mkdirp(path)
-    const templates = await plainTemplates({ name: options.name })
+    const templates = await template({ name: options.name })
     for (const [name, content] of Object.entries(templates)) {
       await fse.outputFile(`${path}/${name}`, content + '\n')
     }
@@ -43,4 +56,6 @@ cac
     console.log('Package created successfully!')
   })
 
+cac.help()
+cac.version(pkg.version)
 cac.parse()
