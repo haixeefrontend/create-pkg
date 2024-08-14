@@ -1,6 +1,7 @@
 {
   "name": "@haixee/create-pkg",
-  "version": "0.0.3",
+  "version": "0.0.3-beta.0",
+  "license": "MIT",
   "type": "module",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
