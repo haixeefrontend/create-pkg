@@ -13,6 +13,8 @@
     "moduleResolution": "Node",
     "isolatedModules": true,
     "moduleDetection": "force",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
 
     /* Linting */
     "strict": true,

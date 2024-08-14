@@ -4,10 +4,36 @@ import { getCurrentYarnVersion, getNpmPackageVersion } from './utils.js'
 
 export interface TemplateOption {
   name: string
+  scripts?: Record<string, string>
+  extraDeps?: {
+    dependencies?: Record<string, string>
+    devDependencies?: Record<string, string>
+    peerDependencies?: Record<string, string>
+  }
 }
 
 export const plainTemplates = async (o: TemplateOption) => {
-  const { name } = o
+  const {
+    name,
+    scripts = { build: 'tsc' },
+    extraDeps = {
+      devDependencies: {
+        typescript: `^${await getNpmPackageVersion('typescript')}`,
+      },
+    },
+  } = o
+
+  const depsLine = (name: string, deps: Record<string, string>) => {
+    if (!deps || Object.keys(deps).length === 0) {
+      return ''
+    }
+    return `
+    "${name}": {
+      ${Object.entries(deps).map(([key, value]) => `"${key}": "${value}"`).join(',\n' + ' '.repeat(8))}
+    }`
+  }
+
+  const depsStr = Object.entries(extraDeps).map(([name, deps]) => depsLine(name, deps)).join(',\n' + ' '.repeat(6))
 
   return {
     'package.json': dedent`{
@@ -28,11 +54,9 @@ export const plainTemplates = async (o: TemplateOption) => {
         "./package.json": "./package.json"
       },
       "scripts": {
-        "build": "tsc"
+        ${Object.entries(scripts).map(([key, value]) => `"${key}": "${value}"`).join(',\n' + ' '.repeat(8))}
       },
-      "devDependencies": {
-        "typescript": "^${await getNpmPackageVersion('typescript')}"
-      },
+      ${depsStr}
       "packageManager": "yarn@${await getCurrentYarnVersion()}"
     }`,
     'tsconfig.json': dedent`{

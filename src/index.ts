@@ -2,11 +2,13 @@ import { createRequire } from 'node:module'
 
 import { confirm, input } from '@inquirer/prompts'
 import * as fse from 'fs-extra'
+
+import pkg from '../package.json'
 import { plainTemplates } from './templates.js'
 
 const require = createRequire(import.meta.url)
 
-const cac = require('cac')() as import('cac').CAC
+const cac = require('cac')(pkg.name) as import('cac').CAC
 
 cac
   .command('[path]', 'Create a new NPM package')
