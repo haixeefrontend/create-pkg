@@ -3,7 +3,7 @@ import { createRequire } from 'node:module'
 import { confirm, input, select } from '@inquirer/prompts'
 import * as fse from 'fs-extra'
 
-import pkg from '../package.json'
+import pkg from '../package.json' with { type: 'json' }
 import { plainTemplates, TemplateOption, viteTemplates } from './templates.js'
 
 const require = createRequire(import.meta.url)
