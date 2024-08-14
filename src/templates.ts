@@ -56,7 +56,7 @@ export const plainTemplates = async (o: TemplateOption) => {
       "scripts": {
         ${Object.entries(scripts).map(([key, value]) => `"${key}": "${value}"`).join(',\n' + ' '.repeat(8))}
       },
-      ${depsStr}
+      ${depsStr},
       "packageManager": "yarn@${await getCurrentYarnVersion()}"
     }`,
     'tsconfig.json': dedent`{
