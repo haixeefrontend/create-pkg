@@ -1,10 +1,10 @@
 import { createRequire } from 'node:module'
 
-import { confirm, input } from '@inquirer/prompts'
+import { confirm, input, select } from '@inquirer/prompts'
 import * as fse from 'fs-extra'
 
 import pkg from '../package.json'
-import { plainTemplates, viteTemplates } from './templates.js'
+import { plainTemplates, TemplateOption, viteTemplates } from './templates.js'
 
 const require = createRequire(import.meta.url)
 
@@ -23,7 +23,16 @@ cac
       options.name = await input({ message: 'Enter the package name' })
     }
 
-    let template = plainTemplates
+    let template: (o: TemplateOption) => Promise<Record<string, string>> = viteTemplates
+    if (!options.template) {
+      options.template = await select({
+        message: 'Select a template',
+        choices: [
+          { name: 'Vite', value: 'vite' },
+          { name: 'Plain', value: 'plain' },
+        ],
+      })
+    }
     switch (options.template) {
       case 'plain':
         template = plainTemplates
@@ -37,7 +46,7 @@ cac
 
     if (!options.yes) {
       const confirmCreate = await confirm({
-        message: `The package will be created at ${path}. Continue?`,
+        message: `The package will be created at ${path} with template ${options.template || 'vite'}. Continue?`,
       })
       if (!confirmCreate) {
         console.log('Package creation canceled')
